@@ -2,12 +2,13 @@ using System;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.ImGuiFileDialog;
 using Dalamud.Interface.Windowing;
-using ImGuiNET;
+
 
 namespace MultiHit.Windows;
 
@@ -157,7 +158,7 @@ public class ConfigWindow : Window, IDisposable
                 {
                     ImGui.PopStyleColor();
                 }
-                if (ImGui.BeginPopupContextItem())
+                if (ImGui.BeginPopupContextItem("MultiHitGroupListCtxNewAction"))
                 {
                     if (ImGui.BeginMenu("Add new action"))
                     {
@@ -262,7 +263,7 @@ public class ConfigWindow : Window, IDisposable
                             {
                                 ImGui.PopStyleColor();
                             }
-                            if (ImGui.BeginPopupContextItem())
+                            if (ImGui.BeginPopupContextItem("MultiHitGroupListCtxActionList"))
                             {
                                 if (ImGui.Selectable("Enable"))
                                 {

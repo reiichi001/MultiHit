@@ -24,6 +24,7 @@ using Dalamud.Plugin.Services;
 using static Dalamud.Plugin.Services.IFlyTextGui;
 using System.Collections.Concurrent;
 using static FFXIVClientStructs.FFXIV.Client.Game.Group.GroupManager.Delegates;
+using InteropGenerator.Runtime;
 
 namespace MultiHit
 {
@@ -142,7 +143,7 @@ namespace MultiHit
 
                 this.updateAffectedAction();
 
-                var receiveActionEffectFuncPtr = Scanner.ScanText("40 55 53 56 41 54 41 55 41 56 41 57 48 8D AC 24 ?? ?? ?? ?? 48 81 EC ?? ?? ?? ?? 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 45 70");
+                var receiveActionEffectFuncPtr = Scanner.ScanText("40 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24");
                 _receiveActionEffectHook = Hook.HookFromAddress<ReceiveActionEffectDelegate>(receiveActionEffectFuncPtr, ReceiveActionEffect);
                 var addFlyTextAddress = Scanner.ScanText("E8 ?? ?? ?? ?? FF C7 41 D1 C7");
                 _addFlyTextHook = Hook.HookFromAddress<AddFlyTextDelegate>(addFlyTextAddress, AddFlyTextDetour);
@@ -229,12 +230,12 @@ namespace MultiHit
                 // dalamud's call
                 // var strIndex = 25;
                 // var numIndex = 28;
-                var atkArrayDataHolder = ((UIModule*)GameGui.GetUIModule())->GetRaptureAtkModule()->AtkModule.AtkArrayDataHolder;
+                var atkArrayDataHolder = ((UIModule*)GameGui.GetUIModule().Address)->GetRaptureAtkModule()->AtkModule.AtkArrayDataHolder;
                 Log.Debug($"addonFlyText: {addonFlyText:X} actorIndex:{actorIndex} offsetNum: {offsetNum} offsetNumMax: {offsetNumMax} offsetStr: {offsetStr} offsetStrMax: {offsetStrMax} unknown:{unknown}");
                 try
                 {
                     var strArray = atkArrayDataHolder._StringArrays[strIndex];
-                    var flyText1Ptr = strArray->StringArray[offsetStr];
+                    var flyText1Ptr = &strArray->StringArray[offsetStr];
                     if (flyText1Ptr == null || (nint)flyText1Ptr == IntPtr.Zero)
                     {
                         _addFlyTextHook.Original(
@@ -258,7 +259,7 @@ namespace MultiHit
                     int color = numArray->IntArray[offsetNum + 6];
                     int icon = numArray->IntArray[offsetNum + 7];
                     var text1 = Marshal.PtrToStringUTF8((nint)flyText1Ptr);
-                    var flyText2Ptr = strArray->StringArray[offsetStr + 1];
+                    var flyText2Ptr = &strArray->StringArray[offsetStr + 1];
                     var text2 = Marshal.PtrToStringUTF8((nint)flyText2Ptr);
                     Log.Debug($"text1:{text1} text2:{text2}");
                     if (text1 == null || text2 == null)
