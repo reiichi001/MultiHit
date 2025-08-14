@@ -584,7 +584,7 @@ namespace MultiHit
                     return;
                 }
                 Nullable<Action> action = actionDict.GetValueOrDefault(effectHeader->ActionId);
-                if (action == null)
+                if (action == null || action.Value.AnimationEnd.ValueNullable == null)
                 {
                     Log.Debug("action is null");
                     _receiveActionEffectHook.Original(sourceId, sourceCharacter, pos, effectHeader, effectArray, effectTail);

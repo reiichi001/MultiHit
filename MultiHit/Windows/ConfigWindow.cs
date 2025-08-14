@@ -158,7 +158,7 @@ public class ConfigWindow : Window, IDisposable
                 {
                     ImGui.PopStyleColor();
                 }
-                if (ImGui.BeginPopupContextItem("MultiHitGroupListCtxNewAction"))
+                if (ImGui.BeginPopupContextItem($"MultiHitGroupListCtxNewAction_{groupIdx}"))
                 {
                     if (ImGui.BeginMenu("Add new action"))
                     {
@@ -263,7 +263,7 @@ public class ConfigWindow : Window, IDisposable
                             {
                                 ImGui.PopStyleColor();
                             }
-                            if (ImGui.BeginPopupContextItem("MultiHitGroupListCtxActionList"))
+                            if (ImGui.BeginPopupContextItem($"MultiHitGroupListCtxActionList_{actionIdx}"))
                             {
                                 if (ImGui.Selectable("Enable"))
                                 {
